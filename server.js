@@ -1,68 +1,42 @@
 const express = require("express");
+const admin = require("firebase-admin");
 
 const app = express();
 app.use(express.json());
 
-// TU PROYECTO FIREBASE
-const PROJECT_ID = "contabilidad-wqr";
+// leer credencial desde Railway
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
-// RUTA PRINCIPAL
-app.get("/", (req,res)=>{
-    res.send("NSS Bot funcionando");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
 });
 
-// BOT
-app.post("/bot", async (req,res)=>{
+const db = admin.firestore();
 
-    const mensaje = req.body.message;
+app.get("/", (req, res) => {
+  res.send("NSS BOT funcionando");
+});
 
-    try{
+// consultar inventario
+app.get("/producto/:nombre", async (req, res) => {
+  const nombre = req.params.nombre;
 
-        const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/inventario`;
+  const snapshot = await db
+    .collection("productos")
+    .where("nombre", "==", nombre)
+    .get();
 
-        const response = await fetch(url);
-        const data = await response.json();
+  if (snapshot.empty) {
+    return res.json({ mensaje: "Producto no encontrado" });
+  }
 
-        let productos = [];
+  const producto = snapshot.docs[0].data();
 
-        if(data.documents){
-
-            data.documents.forEach(doc=>{
-
-                const f = doc.fields;
-
-                productos.push({
-                    nombre: f.nombre.stringValue,
-                    precio: f.precio.integerValue,
-                    stock: f.stock.integerValue
-                });
-
-            });
-
-        }
-
-        let respuesta = "Productos disponibles:\n";
-
-        productos.forEach(p=>{
-            respuesta += `${p.nombre} - $${p.precio} (${p.stock})\n`;
-        });
-
-        res.json({
-            reply: respuesta
-        });
-
-    }catch(error){
-
-        res.json({
-            reply:"Error leyendo inventario"
-        });
-
-    }
-
+  res.json(producto);
 });
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, ()=>{
-    console.log("NSS Bot activo en puerto " + PORT);
+app.listen(PORT, () => {
+  console.log("Servidor NSS activo en puerto", PORT);
 });
