@@ -5,12 +5,14 @@ const app = express();
 app.use(express.json());
 
 /*
-========================
-FIREBASE CONFIG
-========================
+FIREBASE CONFIG SIMPLE
 */
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+const base64 = process.env.FIREBASE_KEY_BASE64;
+
+const json = Buffer.from(base64, "base64").toString("utf8");
+
+const serviceAccount = JSON.parse(json);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -18,42 +20,35 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-console.log("🔥 Firebase conectado correctamente");
+console.log("🔥 Firebase conectado");
 
 /*
-========================
-TEST SERVER
-========================
+RUTA TEST
 */
 
 app.get("/", (req, res) => {
-  res.send("Servidor funcionando correctamente 🚀");
+  res.send("Servidor activo");
 });
 
 /*
-========================
 WEBHOOK
-========================
 */
 
 app.post("/webhook", async (req, res) => {
 
   try {
 
-    const data = req.body;
-
-    console.log("Webhook recibido:", data);
-
-    await db.collection("webhooks").add({
-      data: data,
+    await db.collection("test").add({
+      mensaje: "Webhook funcionando",
+      data: req.body,
       fecha: new Date()
     });
 
-    res.status(200).send("Webhook recibido");
+    res.send("Guardado en Firebase");
 
   } catch (error) {
 
-    console.error("Error webhook:", error);
+    console.error(error);
 
     res.status(500).send("Error");
 
@@ -62,13 +57,11 @@ app.post("/webhook", async (req, res) => {
 });
 
 /*
-========================
 PORT
-========================
 */
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+  console.log("Servidor corriendo en puerto", PORT);
 });
