@@ -20,6 +20,14 @@ const VARIANTS: Record<string, number> = {
   check: 2,
   sparkle: 2,
   toggle: 2,
+  v_owl: 3,
+  v_squirrel: 3,
+  v_beaver: 3,
+  v_fox: 3,
+  v_turtle: 3,
+  v_teacher: 3,
+  type: 2,
+  tick: 2,
 };
 
 /**

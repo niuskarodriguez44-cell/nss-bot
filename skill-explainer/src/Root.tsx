@@ -1,8 +1,12 @@
 import React from "react";
-import { Composition } from "remotion";
+import { Composition, Still } from "remotion";
 import { SkillExplainer } from "./SkillExplainer";
 import { FPS, TOTAL_FRAMES } from "./timeline";
 import { AgentPlanner } from "./agent/AgentPlanner";
+import { McpStory } from "./story/McpStory";
+import { STORY_TOTAL } from "./story/script";
+import { SpriteSheet } from "./story/SpriteSheet";
+import { FrameBauhaus, FramePixel, FrameShadow } from "./story/StyleFrames";
 import { AGENT_TOTAL } from "./agent/theme";
 
 export const RemotionRoot: React.FC = () => {
@@ -23,6 +27,38 @@ export const RemotionRoot: React.FC = () => {
         height={1080}
         fps={FPS}
         durationInFrames={AGENT_TOTAL}
+      />
+      <Composition
+        id="McpStory"
+        component={McpStory}
+        width={1920}
+        height={1080}
+        fps={FPS}
+        durationInFrames={STORY_TOTAL}
+      />
+      <Still
+        id="SpriteSheet"
+        component={SpriteSheet}
+        width={1920}
+        height={1080}
+      />
+      <Still
+        id="StyleBauhaus"
+        component={FrameBauhaus}
+        width={1920}
+        height={1080}
+      />
+      <Still
+        id="StylePixel"
+        component={FramePixel}
+        width={1920}
+        height={1080}
+      />
+      <Still
+        id="StyleShadow"
+        component={FrameShadow}
+        width={1920}
+        height={1080}
       />
     </>
   );

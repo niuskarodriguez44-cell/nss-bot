@@ -37,3 +37,10 @@ Código en `src/agent/`; textos en `AGENT_TEXTS` (`src/agent/AgentPlanner.tsx`);
 ## Sonido
 - Efectos: diseñados a mano con síntesis modal (teclas, fieltro, marimba afinada en la tonalidad de la música, campanas de vidrio, whooshes) → `python3 scripts/make_sfx_foley.py`. El pack CC0 uisfx sigue disponible con `scripts/build_sfx_pack.py`.
 - Música: generada con `python3 scripts/make_audio.py skill|agent` (síntesis propia).
+
+## Video 3 · McpStory (60 s) — "El Búho y la toma universal"
+Animales en píxel art que explican qué es un MCP. Guion en `docs/mcp_storyboard.md`; código en `src/story/`;
+música y efectos 8 bits con `python3 scripts/make_chiptune.py`.
+```bash
+npx remotion render McpStory out/mcp_animales.mp4
+```
