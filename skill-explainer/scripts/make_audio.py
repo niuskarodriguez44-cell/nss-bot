@@ -113,22 +113,34 @@ def reverb(buf, wet=0.28, secs=2.2):
 
 
 # --------------------------------------------------------------------- música
-def make_music():
+TRACKS = {
+    # video 1 (SkillExplainer, 46 s)
+    "skill": dict(duration=46.0, bars=19, mid=6, full=12, bells=8, end=16, name="music.mp3",
+                  chords=[[48, 52, 55, 60], [47, 50, 55, 59], [45, 52, 57, 60], [41, 53, 57, 60]],
+                  bass=[36, 43, 45, 41], arp=0.36),
+    # video 2 (AgentPlanner, 60 s): más calmado y contemplativo, en la menor
+    "agent": dict(duration=60.0, bars=24, mid=8, full=18, bells=14, end=21, name="music_agent.mp3",
+                  chords=[[45, 52, 57, 60], [41, 53, 57, 60], [48, 52, 55, 60], [43, 50, 55, 59]],
+                  bass=[45, 41, 36, 43], arp=0.30),
+}
+
+
+def make_music(cfg=None):
+    cfg = cfg or TRACKS["skill"]
+    DURATION = cfg["duration"]
     bar = 2.5  # 96 BPM, compás de 4/4
     beat = bar/4
     eighth = beat/2
     n = int(DURATION * SR)
     buf = np.zeros((n, 2))
-    chords = [  # C, G/B, Am, F
-        [48, 52, 55, 60], [47, 50, 55, 59], [45, 52, 57, 60], [41, 53, 57, 60]]
-    bass_notes = [36, 43, 45, 41]
+    chords = cfg["chords"]
+    bass_notes = cfg["bass"]
     pattern = [0, 1, 2, 3, 2, 1, 2, 1]
-    total_bars = 19
+    total_bars = cfg["bars"]; END = cfg["end"]
     for b in range(total_bars):
         t0 = b*bar
-        ch = chords[b % 4] if b < 16 else chords[0]
-        bs = bass_notes[b % 4] if b < 16 else bass_notes[0]
-        last = b >= 16
+        ch = chords[b % 4] if b < END else chords[0]
+        bs = bass_notes[b % 4] if b < END else bass_notes[0]
         dur = bar if not (b == total_bars-1) else DURATION - t0
         # colchón
         for m in ch:
@@ -138,24 +150,24 @@ def make_music():
             for k in range(8):
                 if b == 1 and k % 4 != 0:
                     continue
-                if b >= 16 and k > (4 if b == 16 else 0):
+                if b >= END and k > (4 if b == END else 0):
                     continue
                 m = ch[pattern[k]] + 12
-                amp = 0.30 if b < 6 else 0.36
+                amp = cfg["arp"] - 0.06 if b < cfg["mid"] else cfg["arp"]
                 place(buf, pluck(midi(m), 1.4, amp), t0 + k*eighth, pan=-0.35 + 0.7*(k/7))
         # bajo
-        if 6 <= b < 16:
+        if cfg["mid"] <= b < END:
             place(buf, bass(midi(bs), bar, 0.38), t0)
         # percusión suave
-        if 6 <= b < 16:
+        if cfg["mid"] <= b < END:
             for k in range(4):
-                if k in (0, 2) or b >= 12:
+                if k in (0, 2) or b >= cfg["full"]:
                     place(buf, kick(0.28), t0 + k*beat)
             for k in range(8):
                 if k % 2 == 1:
                     place(buf, shaker(0.09, 0.16), t0 + k*eighth, pan=0.3)
         # campanas agudas
-        if 8 <= b < 16:
+        if cfg["bells"] <= b < END:
             for k in (0, 3, 5):
                 m = ch[(b + k) % 4] + 24
                 place(buf, pluck(midi(m), 1.6, 0.20), t0 + k*beat/1.0 * 0.5 + 0.0, pan=0.5)
@@ -243,8 +255,15 @@ def sfx_sparkle():
 
 
 def main():
-    print("music…")
-    to_mp3(make_music(), os.path.join(PUBLIC, "music.mp3"), "160k")
+    import sys
+    which = sys.argv[1] if len(sys.argv) > 1 else "all"
+    for key, cfg in TRACKS.items():
+        if which in ("all", key):
+            print("music", key, "…")
+            to_mp3(make_music(cfg), os.path.join(PUBLIC, cfg["name"]), "160k")
+    if which != "all":
+        return
+    # Efectos sintéticos de reserva (solo con `all`); el video usa el pack CC0 de build_sfx_pack.py.
     sfx = {
         "tick": sfx_tick(), "tock": sfx_tock(), "pop": sfx_pop(),
         "whoosh": sfx_whoosh(), "chime": sfx_chime(),

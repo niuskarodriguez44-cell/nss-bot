@@ -72,6 +72,9 @@ const buildCues = (): Cue[] => {
 
 const CUES = buildCues();
 
+// Los sonidos del pack uisfx (CC0) vienen más bajos que la música: ganancia común.
+const SFX_GAIN = 2.2;
+
 // Si falta algún archivo en public/, simplemente se omite (el render no se rompe).
 const AVAILABLE = new Set(getStaticFiles().map((f) => f.name));
 const hasMusic = AVAILABLE.has("music.mp3");
@@ -91,7 +94,7 @@ export const Soundtrack: React.FC = () => (
     ) : null}
     {CUES.filter((c) => AVAILABLE.has(`sfx/${c.name}.mp3`)).map((c, i) => (
       <Sequence key={i} from={c.frame} durationInFrames={60} layout="none">
-        <Audio src={staticFile(`sfx/${c.name}.mp3`)} volume={c.volume} />
+        <Audio src={staticFile(`sfx/${c.name}.mp3`)} volume={Math.min(1, c.volume * SFX_GAIN)} />
       </Sequence>
     ))}
   </>

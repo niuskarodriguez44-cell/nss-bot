@@ -26,3 +26,14 @@ python3 scripts/make_audio.py     # requiere numpy
 
 Los efectos están sincronizados por frame en `src/Soundtrack.tsx`.
 Si falta algún archivo de audio, se omite sin romper el render.
+
+## Video 2 · AgentPlanner (60 s)
+Cómo un agente de IA ayuda a planificar clases a largo plazo (cámara virtual, cursor, UI estilo editorial).
+```bash
+npx remotion render AgentPlanner out/agent_planner.mp4
+```
+Código en `src/agent/`; textos en `AGENT_TEXTS` (`src/agent/AgentPlanner.tsx`); tiempos en `src/agent/theme.ts`.
+
+## Sonido
+- Efectos: pack **uisfx** (CC0) incluido con la skill Real SFX → `python3 scripts/build_sfx_pack.py` los copia a `public/sfx/`.
+- Música: generada con `python3 scripts/make_audio.py skill|agent` (síntesis propia).
