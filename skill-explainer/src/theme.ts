@@ -89,3 +89,9 @@ export const useScene = (
     : 1;
   return { frame: raw - lead, opacity: Math.min(fadeIn, fadeOutValue) };
 };
+
+/** "#rrggbb" + alfa -> "rgba(...)". */
+export const hexA = (hex: string, alpha: number) => {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+};
