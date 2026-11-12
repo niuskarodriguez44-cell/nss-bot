@@ -35,5 +35,5 @@ npx remotion render AgentPlanner out/agent_planner.mp4
 Código en `src/agent/`; textos en `AGENT_TEXTS` (`src/agent/AgentPlanner.tsx`); tiempos en `src/agent/theme.ts`.
 
 ## Sonido
-- Efectos: pack **uisfx** (CC0) incluido con la skill Real SFX → `python3 scripts/build_sfx_pack.py` los copia a `public/sfx/`.
+- Efectos: diseñados a mano con síntesis modal (teclas, fieltro, marimba afinada en la tonalidad de la música, campanas de vidrio, whooshes) → `python3 scripts/make_sfx_foley.py`. El pack CC0 uisfx sigue disponible con `scripts/build_sfx_pack.py`.
 - Música: generada con `python3 scripts/make_audio.py skill|agent` (síntesis propia).

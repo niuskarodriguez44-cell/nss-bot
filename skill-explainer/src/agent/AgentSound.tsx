@@ -1,5 +1,6 @@
 import React from "react";
-import { Audio, getStaticFiles, interpolate, Sequence, staticFile } from "remotion";
+import { Audio, getStaticFiles, interpolate, staticFile } from "remotion";
+import { SfxLayer } from "../SfxLayer";
 import { AGENT_FADE, AGENT_SCENES, AGENT_TOTAL } from "./theme";
 import { PLAN } from "./scenes/A4Plan";
 import { ADAPT } from "./scenes/A5Adapt";
@@ -24,7 +25,6 @@ const buildCues = (): Cue[] => {
   add(S.hook.from + 124, "checkpoint", 0.4);
 
   // 2 · Horizonte largo
-  for (let i = 0; i < 36; i += 2) add(S.horizon.from + 6 + i * 2.2, "typing", 0.13);
   for (let i = 0; i < 7; i++) add(S.horizon.from + 100 + i * 9 + 16, "select", 0.35);
   [120, 130, 140].forEach((f) => add(S.horizon.from + f, "progress-step", 0.3));
   add(S.horizon.from + 172, "notification", 0.3);
@@ -39,7 +39,7 @@ const buildCues = (): Cue[] => {
   const A = S.plan.from;
   add(A + 8, "open", 0.35);
   add(A + PLAN.clickInput, "press", 0.4);
-  for (let f = PLAN.typeStart; f < PLAN.typeStart + 98; f += 3) add(A + f, "typing", 0.2);
+  for (let f = PLAN.typeStart; f < PLAN.typeStart + 98; f += 4) add(A + f, "typing", 0.3);
   add(A + PLAN.clickSend, "press", 0.35);
   add(A + PLAN.clickSend + 2, "send", 0.5);
   for (let i = 0; i < 4; i++) add(A + PLAN.stepStart + i * PLAN.stepGap + 24, "check", 0.4);
@@ -62,7 +62,7 @@ const buildCues = (): Cue[] => {
   add(B + ADAPT.clickToggle, "press", 0.4);
   add(B + ADAPT.clickToggle + 3, "toggle-on", 0.5);
   add(B + ADAPT.pressSlider, "press", 0.35);
-  for (let f = ADAPT.pressSlider + 4; f < ADAPT.sliderEnd; f += 6) add(B + f, "hover", 0.25);
+  for (let f = ADAPT.pressSlider + 4; f < ADAPT.sliderEnd; f += 9) add(B + f, "hover", 0.25);
   add(B + ADAPT.sliderEnd + 2, "checkpoint", 0.45);
 
   // 6 · Memoria
@@ -82,9 +82,28 @@ const buildCues = (): Cue[] => {
 };
 
 const CUES = buildCues();
-const SFX_GAIN = 2.2;
-const AVAILABLE = new Set(getStaticFiles().map((f) => f.name));
-const hasMusic = AVAILABLE.has("music_agent.mp3");
+const ROLE: Record<string, string> = {
+  typing: "key",
+  hover: "key",
+  press: "tap",
+  select: "note",
+  "progress-step": "note",
+  swipe: "whoosh",
+  expand: "whoosh_s",
+  open: "whoosh_s",
+  connecting: "whoosh_s",
+  snap: "tok",
+  checkpoint: "bell",
+  complete: "bell_up",
+  check: "check",
+  notification: "notif",
+  receive: "notif",
+  send: "send",
+  drop: "thud",
+  "toggle-on": "toggle",
+  retry: "hi",
+};
+const hasMusic = new Set(getStaticFiles().map((f) => f.name)).has("music_agent.mp3");
 
 export const AgentSound: React.FC = () => (
   <>
@@ -99,10 +118,6 @@ export const AgentSound: React.FC = () => (
         }
       />
     ) : null}
-    {CUES.filter((c) => AVAILABLE.has(`sfx/${c.name}.mp3`)).map((c, i) => (
-      <Sequence key={i} from={c.frame} durationInFrames={60} layout="none">
-        <Audio src={staticFile(`sfx/${c.name}.mp3`)} volume={Math.min(1, c.volume * SFX_GAIN)} />
-      </Sequence>
-    ))}
+    <SfxLayer cues={CUES} roleOf={ROLE} prefix="v2" gain={1.4} />
   </>
 );

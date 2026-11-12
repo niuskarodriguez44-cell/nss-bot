@@ -1,5 +1,6 @@
 import React from "react";
-import { Audio, getStaticFiles, interpolate, Sequence, staticFile } from "remotion";
+import { Audio, getStaticFiles, interpolate, staticFile } from "remotion";
+import { SfxLayer } from "./SfxLayer";
 import { FADE } from "./theme";
 import { SCENES, TOTAL_FRAMES } from "./timeline";
 import { TYPE_START, CALLOUT_START, CALLOUT_STEP } from "./scenes/Scene4Example";
@@ -36,7 +37,7 @@ const buildCues = (): Cue[] => {
 
   // 4 · Skill de ejemplo
   add(S.example.from + 4, "whoosh", 0.32);
-  for (let f = TYPE_START; f < TYPE_START + 120; f += 3) add(S.example.from + f, "tick", 0.2);
+  for (let f = TYPE_START; f < TYPE_START + 120; f += 4) add(S.example.from + f, "tick", 0.3);
   for (let i = 0; i < 5; i++) {
     const s = S.example.from + CALLOUT_START + i * CALLOUT_STEP;
     add(s + 4, "whoosh", 0.18);
@@ -72,12 +73,19 @@ const buildCues = (): Cue[] => {
 
 const CUES = buildCues();
 
-// Los sonidos del pack uisfx (CC0) vienen más bajos que la música: ganancia común.
-const SFX_GAIN = 2.2;
+// Cada nombre de cue usa un rol de sonido "foley" (ver scripts/make_sfx_foley.py).
+const ROLE: Record<string, string> = {
+  tick: "key",
+  tock: "tok",
+  pop: "note",
+  whoosh: "whoosh",
+  chime: "bell",
+  success: "bell_up",
+  sparkle: "sparkle",
+};
 
 // Si falta algún archivo en public/, simplemente se omite (el render no se rompe).
-const AVAILABLE = new Set(getStaticFiles().map((f) => f.name));
-const hasMusic = AVAILABLE.has("music.mp3");
+const hasMusic = new Set(getStaticFiles().map((f) => f.name)).has("music.mp3");
 
 export const Soundtrack: React.FC = () => (
   <>
@@ -92,10 +100,6 @@ export const Soundtrack: React.FC = () => (
         }
       />
     ) : null}
-    {CUES.filter((c) => AVAILABLE.has(`sfx/${c.name}.mp3`)).map((c, i) => (
-      <Sequence key={i} from={c.frame} durationInFrames={60} layout="none">
-        <Audio src={staticFile(`sfx/${c.name}.mp3`)} volume={Math.min(1, c.volume * SFX_GAIN)} />
-      </Sequence>
-    ))}
+    <SfxLayer cues={CUES} roleOf={ROLE} prefix="v1" gain={1.4} />
   </>
 );

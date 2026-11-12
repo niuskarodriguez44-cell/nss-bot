@@ -156,7 +156,7 @@ export const A2Horizon: React.FC<AgentSceneProps> = ({ texts, lead, durationInFr
           style={{
             position: "absolute",
             left: 150,
-            top: 820,
+            top: 770,
             display: "flex",
             gap: 90,
             opacity: ease(frame, [120, 150], [0, 1]),
@@ -168,8 +168,8 @@ export const A2Horizon: React.FC<AgentSceneProps> = ({ texts, lead, durationInFr
             { v: counter(12, 140), l: t.stats[2] },
           ].map((s, i) => (
             <div key={i}>
-              <div style={{ fontFamily: SERIF, fontSize: 96, lineHeight: "100px", color: P.dark }}>{s.v}</div>
-              <div style={{ fontFamily: SANS, fontSize: 28, color: P.mid }}>{s.l}</div>
+              <div style={{ fontFamily: SERIF, fontSize: 80, lineHeight: "84px", color: P.dark }}>{s.v}</div>
+              <div style={{ fontFamily: SANS, fontSize: 26, color: P.mid }}>{s.l}</div>
             </div>
           ))}
         </div>
@@ -178,8 +178,8 @@ export const A2Horizon: React.FC<AgentSceneProps> = ({ texts, lead, durationInFr
         <div
           style={{
             position: "absolute",
-            left: 960,
-            top: 440,
+            left: 900,
+            top: 206,
             fontFamily: SERIF,
             fontStyle: "italic",
             fontSize: 44,
