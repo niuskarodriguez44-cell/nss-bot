@@ -72,7 +72,7 @@ const Particles: React.FC = () => {
     d.scale.set(size * stretch, size * (1 - 0.35 * (1 - 1 / stretch)), 1);
     d.updateMatrix();
     mesh.setMatrixAt(i, d.matrix);
-    col.copy(ind).lerp(cy, clamp(o.c)).multiplyScalar(clamp(o.a, 0, 1.4));
+    col.copy(ind).lerp(cy, clamp(o.c)).multiplyScalar(clamp(o.a, 0, 1.2) * 0.82);
     mesh.setColorAt(i, col);
   }
   mesh.instanceMatrix.needsUpdate = true;

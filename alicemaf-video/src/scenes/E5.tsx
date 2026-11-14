@@ -33,7 +33,7 @@ export const formation: Formation = (i, t, o) => {
   o.c = lerp(o.c, q.c ? 0.7 : 0, u); o.a = lerp(o.a, leg ? 0.8 : 0.42 + 0.3 * nodeOn, u);
 };
 
-const WORDS = ['guagua', 'libreta', 'bodega', '«estar en la lucha»'];
+const WORDS = ['guagua', '«estar en la lucha»'];
 export const Overlay: React.FC = () => {
   const t = useCurrentFrame() / FPS;
   const [cx, cy] = px(OX, 0);
@@ -45,13 +45,13 @@ export const Overlay: React.FC = () => {
         <div style={{fontFamily: fonts.sans, fontWeight: 700, fontSize: 150, color: colors.indigo, lineHeight: 1, opacity: n2, transform: `translateY(${(1 - n2) * 20}px)`}}>12B</div>
       </div>
       {WORDS.map((w, k) => {
-        const t0 = 7.4 + k * 2.8, d = 2.7, u = (t - t0) / d;
+        const t0 = 4.4 + k * 2.3, d = 2.3, u = (t - t0) / d;
         if (u < 0 || u > 1) return null;
-        const th = -0.6 + u * 4.2, r = (u > 0.72 ? 1 - ex((u - 0.72) / 0.28) : ex(Math.min(1, u / 0.2))) * 330;
+        const th = -0.6 + u * 4.2, r = (u > 0.72 ? 1 - ex((u - 0.72) / 0.28) : ex(Math.min(1, u / 0.2))) * 215;
         const op = Math.min(ex(clamp(u / 0.15)), 1 - ex(clamp((u - 0.8) / 0.2)));
-        return <div key={w} style={{position: 'absolute', left: cx + Math.cos(th) * r * 1.25, top: cy + Math.sin(th) * r * 0.62, transform: 'translate(-50%,-50%)', opacity: op, fontFamily: fonts.sans, fontWeight: 600, fontSize: 40, color: colors.cyan, whiteSpace: 'nowrap'}}>{w}</div>;
+        return <div key={w} style={{position: 'absolute', left: cx + Math.cos(th) * r * 1.1, top: cy + Math.sin(th) * r * 0.62, transform: 'translate(-50%,-50%)', opacity: op, fontFamily: fonts.sans, fontWeight: 600, fontSize: 40, color: colors.cyan, whiteSpace: 'nowrap'}}>{w}</div>;
       })}
-      <Beat from={18.4} to={22.9} style={{justifyContent: 'flex-end', alignItems: 'center'}}>
+      <Beat from={9.2} to={12.0} style={{justifyContent: 'flex-end', alignItems: 'center'}}>
         <Label size={28}>Propuesta de investigación · 12B parámetros (objetivo)</Label>
       </Beat>
     </>

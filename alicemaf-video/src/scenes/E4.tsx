@@ -42,7 +42,8 @@ const bez = (a: [number, number], b: [number, number], u: number): [number, numb
   return [x, y];
 };
 
-export const formation: Formation = (i, t, o) => {
+const K = 1.55; // comprime la coreografía original (34 s) a ~21 s
+const inner: Formation = (i, t, o) => {
   o.z = 0; o.c = 0; o.a = 0.5; o.s = 0.05;
   let k = i;
   const set = (p: number[], s: number, c: number, a: number) => { o.x = p[0]; o.y = p[1]; o.z = p[2] ?? 0; o.s = s; o.c = c; o.a = a; };
@@ -67,11 +68,11 @@ export const formation: Formation = (i, t, o) => {
     const T = t - t0 - d;
     const p1 = clamp(T / 1.9), p2 = clamp((T - 1.9) / 1.7), p3 = clamp((T - 5.6) / 1.9);
     let pos: [number, number] = ORG, fade = 1;
-    if (T < 0) { pos = [ORG[0] + (R2[i] - 0.5) * 0.5, ORG[1] + (R3[i] - 0.5) * 0.5]; fade = 0.07; }
+    if (T < 0) { pos = [ORG[0] + (R2[i] - 0.5) * 1.1, ORG[1] + (R3[i] - 0.5) * 1.1]; fade = 0.035; }
     else if (T < 1.9) pos = bez(ORG, ROUT, ex(p1));
     else if (T < 3.6) pos = bez([ROUT[0], ROUT[1]], [EXP[ex_][0] - 1.1, EXP[ex_][1]], ex(p2));
     else if (T < 5.6) pos = [EXP[ex_][0] + (R2[i] - 0.5) * 1.6, EXP[ex_][1] + (R3[i] - 0.5) * 0.9]; // procesa dentro del experto
-    else { pos = bez([EXP[ex_][0] + 1.1, EXP[ex_][1]], OUT, ex(p3)); if (T > 7.5) { pos = [OUT[0] + (R2[i] - 0.5) * 0.4, OUT[1] + (R3[i] - 0.5) * 0.4]; fade = 1 - clamp((T - 8.5) / 1.5); } }
+    else { pos = bez([EXP[ex_][0] + 1.1, EXP[ex_][1]], OUT, ex(p3)); if (T > 7.5) { pos = [OUT[0] + (R2[i] - 0.5) * 1.0, OUT[1] + (R3[i] - 0.5) * 1.0]; fade = 0.35 * (1 - clamp((T - 7.8) / 1.0)); } }
     set([pos[0], pos[1], (R2[i] - 0.5) * (T > 3.6 && T < 5.6 ? 0.8 : 0.1)], 0.05, 0.75 + 0.25 * R3[i], 0.7 * fade);
   }
   o.a *= appear;
@@ -79,20 +80,22 @@ export const formation: Formation = (i, t, o) => {
   void N;
 };
 
+export const formation: Formation = (i, t, o) => inner(i, t * K, o);
+
 const LBL: [string, number, number, number][] = [
   ['Token', ORG[0], ORG[1] - 0.95, 5.6], ['Enrutador', ROUT[0], ROUT[1] - 1.35, 6.4],
   ['Experto A', EXP[0][0], EXP[0][1] + 1.2, 7.2], ['Experto B', EXP[1][0], EXP[1][1] + 1.2, 7.4], ['Experto C', EXP[2][0], EXP[2][1] - 1.35, 7.6],
   ['Salida combinada', OUT[0] - 0.4, OUT[1] - 1.45, 8.2],
 ];
 export const Overlay: React.FC = () => {
-  const t = useCurrentFrame() / FPS;
+  const t = (useCurrentFrame() / FPS) * K;
   return (
     <>
-      <Beat from={0.8} to={4.9} style={{justifyContent: 'flex-start', alignItems: 'center'}}>
+      <Beat from={0.4} to={3.4} style={{justifyContent: 'flex-start', alignItems: 'center'}}>
         <Label size={28} style={{maxWidth: 1250, textAlign: 'center', color: colors.coolWhite, marginTop: 20}}>En una capa MoE, el enrutador selecciona qué expertos procesan cada token</Label>
       </Beat>
       {LBL.map(([txt, x, y, t0], k) => {
-        const o = ex(clamp((t - t0) / 0.9)) * (1 - ex(clamp((t - 33.4) / 0.9)));
+        const o = ex(clamp((t - t0) / 0.9)) * (1 - ex(clamp((t - 31.6) / 0.9)));
         const [lx, ly] = px(x, y);
         return <div key={k} style={{position: 'absolute', left: lx, top: ly, transform: 'translate(-50%,-50%)', opacity: o, fontFamily: fonts.mono, fontSize: 22, letterSpacing: '0.22em', textTransform: 'uppercase', color: colors.slate, whiteSpace: 'nowrap'}}>{txt}</div>;
       })}

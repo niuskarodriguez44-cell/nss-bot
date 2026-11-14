@@ -38,3 +38,6 @@ export const easeInOut = Easing.bezier(0.65, 0, 0.35, 1);
 export const FPS = 30;
 export const SAFE = 0.05; // margen de seguridad de texto: 5 %
 export const MIN_TEXT_SECONDS = 2;
+
+/** true cuando blender/render_hero.sh terminó y existe public/hero/aire.mp4 */
+export const HERO_VIDEO = false;
