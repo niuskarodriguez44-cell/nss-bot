@@ -1,4 +1,4 @@
 import {Config} from '@remotion/cli/config';
 Config.setVideoImageFormat('png');
 Config.setCodec('h264');
-Config.setChromiumOpenGlRenderer('angle');
+Config.setChromiumOpenGlRenderer('swangle');
