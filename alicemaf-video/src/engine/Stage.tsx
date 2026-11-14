@@ -87,9 +87,10 @@ const Particles: React.FC = () => {
     evalAt(Math.max(0, sec - 1 / FPS), i, p);
     const vx = o.x - p.x, vy = o.y - p.y, vz = o.z - p.z;
     const v = Math.hypot(vx, vy, vz);
-    const stretch = 1 + clamp(v * 11, 0, 4.5); // se estiran al viajar, se contraen al asentarse
+    const teleport = v > 0.9; // salto de reciclaje (no es viaje): sin estela
+    const stretch = teleport ? 1 : 1 + clamp(v * 6, 0, 2.6); // se estiran al viajar, se contraen al asentarse
     d.position.set(o.x, o.y, o.z);
-    d.rotation.set(0, 0, v > 0.004 ? Math.atan2(vy, vx) : 0);
+    d.rotation.set(0, 0, v > 0.004 && !teleport ? Math.atan2(vy, vx) : 0);
     const size = o.s * 4.2;
     d.scale.set(size * stretch, size * (1 - 0.35 * (1 - 1 / stretch)), 1);
     d.updateMatrix();
@@ -100,7 +101,7 @@ const Particles: React.FC = () => {
     d.scale.set(size * 3.4 * Math.min(stretch, 2.2), size * 3.4, 1);
     d.updateMatrix();
     halo.setMatrixAt(i, d.matrix);
-    halo.setColorAt(i, col.clone().multiplyScalar(0.16));
+    halo.setColorAt(i, col.clone().multiplyScalar(0.075));
   }
   mesh.instanceMatrix.needsUpdate = true;
   if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;

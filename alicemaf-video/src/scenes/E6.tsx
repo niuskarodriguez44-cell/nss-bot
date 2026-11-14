@@ -9,7 +9,7 @@ export const formation: Formation = (i, t, o) => {
   const ph = (R1[i] * 18 + t * 1.6) % 18, x = -9 + ph;
   const k = 1 - 0.8 * Math.exp(-((x - 0.2) ** 2) / 6);
   o.x = x; o.y = (R2[i] - 0.5) * 4.6 * k; o.z = (R3[i] - 0.5) * 3 * k;
-  o.s = 0.03; o.c = 0.5 + 0.5 * R3[i]; o.a = 0.16 + 0.3 * Math.exp(-(x * x) / 10);
+  o.s = 0.03; o.c = 0.5 + 0.5 * R3[i]; o.a = (0.16 + 0.3 * Math.exp(-(x * x) / 10)) * Math.min(1, ph / 1.5, (18 - ph) / 1.5);
   rotY(o, -0.3);
 };
 
