@@ -7,6 +7,8 @@ import {FPS, colors} from '../brand/tokens';
 import {SCENES} from '../timeline';
 import {N, R1, R2, clamp, lerp, ex, P, Formation} from './rand';
 import {formations} from '../scenes';
+import {Hero3D, heroCamera, HERO_START, HERO_END} from './Hero3D';
+import {HERO_VIDEO} from '../brand/tokens';
 
 const A: P = {x: 0, y: 0, z: 0, s: 0, c: 0, a: 0};
 const B: P = {x: 0, y: 0, z: 0, s: 0, c: 0, a: 0};
@@ -76,6 +78,10 @@ const Particles: React.FC = () => {
   void calm;
   camera.position.set(Math.sin(sec * 0.17) * 0.7 * amp, Math.cos(sec * 0.13) * 0.4 * amp, 15.86 - 0.5 * Math.sin(sec * 0.09) * amp);
   camera.lookAt(0, 0, 0);
+  if (!HERO_VIDEO && sec >= HERO_START && sec <= HERO_END) {
+    const hc = heroCamera(sec);
+    camera.position.set(...hc.pos); camera.lookAt(...hc.look);
+  }
   for (let i = 0; i < N; i++) {
     evalAt(sec, i, o);
     evalAt(Math.max(0, sec - 1 / FPS), i, p);
@@ -107,5 +113,6 @@ const Particles: React.FC = () => {
 export const Stage: React.FC<{width: number; height: number}> = ({width, height}) => (
   <ThreeCanvas width={width} height={height} camera={{fov: 35, position: [0, 0, 15.86]}} style={{position: 'absolute', inset: 0}}>
     <Particles />
+    {!HERO_VIDEO && <Hero3D />}
   </ThreeCanvas>
 );

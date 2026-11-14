@@ -11,6 +11,7 @@ const Finish: React.FC = () => {
   return (
     <>
       <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 50%, rgba(8,14,37,0) 52%, rgba(4,7,20,0.62) 100%)', pointerEvents: 'none'}} />
+      <AbsoluteFill style={{background: 'linear-gradient(to top, rgba(8,14,37,0.72) 0%, rgba(8,14,37,0.35) 18%, rgba(8,14,37,0) 34%)', pointerEvents: 'none'}} />
       <AbsoluteFill style={{opacity: 0.07, mixBlendMode: 'overlay', pointerEvents: 'none'}}>
         <svg width="100%" height="100%"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={f % 24} /></filter><rect width="100%" height="100%" filter="url(#g)" /></svg>
       </AbsoluteFill>
@@ -20,7 +21,7 @@ const Finish: React.FC = () => {
 
 const Backdrop: React.FC = () => {
   const t = useCurrentFrame() / FPS;
-  const o6 = HERO_VIDEO ? 0 : interpolate(t, [63, 63.4, 79, 81], [0, 0.32, 0.32, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const o6 = 0 * interpolate(t, [63, 63.4, 79, 81], [0, 0.32, 0.32, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const o7 = interpolate(t, [80, 83, 86, 89], [0, 0.4, 0.22, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const img = (src: string, o: number) => o > 0.001 ? <Img src={src} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: o, transform: `scale(${1 + t * 0.0006})`}} /> : null;
   return (
