@@ -1,9 +1,22 @@
 import React from 'react';
-import {AbsoluteFill, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {FPS, HERO_VIDEO, assets, colors} from './brand/tokens';
 import {SCENES, TOTAL_SECONDS} from './timeline';
 import {Stage} from './engine/Stage';
 import {scenes} from './scenes';
+import {Subtitles} from './components/Subtitles';
+
+const Finish: React.FC = () => {
+  const f = useCurrentFrame();
+  return (
+    <>
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 50%, rgba(8,14,37,0) 52%, rgba(4,7,20,0.62) 100%)', pointerEvents: 'none'}} />
+      <AbsoluteFill style={{opacity: 0.07, mixBlendMode: 'overlay', pointerEvents: 'none'}}>
+        <svg width="100%" height="100%"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={f % 24} /></filter><rect width="100%" height="100%" filter="url(#g)" /></svg>
+      </AbsoluteFill>
+    </>
+  );
+};
 
 const Backdrop: React.FC = () => {
   const t = useCurrentFrame() / FPS;
@@ -31,5 +44,8 @@ export const Main: React.FC<{width: number; height: number}> = ({width, height})
       const end = Math.round((SCENES[k + 1]?.start ?? TOTAL_SECONDS) * FPS);
       return <Sequence key={k} from={from} durationInFrames={end - from} name={SCENES[k].id}><S.Overlay /></Sequence>;
     })}
+    <Subtitles />
+    <Finish />
+    <Audio src={staticFile('audio/soundtrack.wav')} />
   </AbsoluteFill>
 );

@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {useCurrentFrame} from 'remotion';
+import {useThree} from '@react-three/fiber';
 import {ThreeCanvas} from '@remotion/three';
 import {FPS, colors} from '../brand/tokens';
 import {SCENES} from '../timeline';
@@ -30,6 +31,9 @@ export const evalAt = (sec: number, i: number, o: P) => {
   }
 };
 
+// aditivo puro sobre RGB; el alfa del canvas no se acumula (evita manchas oscuras al componer)
+const ADD = {blending: THREE.CustomBlending, blendEquation: THREE.AddEquation, blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneFactor, blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.ZeroFactor} as const;
+
 const makeTexture = () => {
   const c = document.createElement('canvas');
   c.width = c.height = 128;
@@ -45,13 +49,17 @@ const makeTexture = () => {
 
 const Particles: React.FC = () => {
   const frame = useCurrentFrame();
-  const {mesh, tex} = useMemo(() => {
+  const {mesh, halo, tex} = useMemo(() => {
     const tex = makeTexture();
-    const mat = new THREE.MeshBasicMaterial({map: tex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending});
+    const mat = new THREE.MeshBasicMaterial({map: tex, transparent: true, depthWrite: false, ...ADD});
     const mesh = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1), mat, N);
     mesh.frustumCulled = false;
     mesh.setColorAt(0, new THREE.Color(1, 1, 1));
-    return {mesh, tex};
+    const hmat = new THREE.MeshBasicMaterial({map: tex, transparent: true, depthWrite: false, ...ADD});
+    const halo = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1), hmat, N);
+    halo.frustumCulled = false; halo.renderOrder = -1;
+    halo.setColorAt(0, new THREE.Color(1, 1, 1));
+    return {mesh, halo, tex};
   }, []);
   const ind = useMemo(() => new THREE.Color(colors.indigo), []);
   const cy = useMemo(() => new THREE.Color(colors.cyan), []);
@@ -60,6 +68,14 @@ const Particles: React.FC = () => {
   const o: P = {x: 0, y: 0, z: 0, s: 0, c: 0, a: 0};
   const p: P = {x: 0, y: 0, z: 0, s: 0, c: 0, a: 0};
   const sec = frame / FPS;
+  const camera = useThree((st) => st.camera);
+  // deriva de cámara con parallax (quieta en E4/E5, donde los rótulos se anclan al esquema)
+  const calm = clamp(Math.min(Math.abs(sec - 30.5), Math.abs(sec - 62.5)) / 1.5);
+  const inRange = sec > 30 && sec < 62.7 ? 0 : 1;
+  const amp = inRange * 1;
+  void calm;
+  camera.position.set(Math.sin(sec * 0.17) * 0.7 * amp, Math.cos(sec * 0.13) * 0.4 * amp, 15.86 - 0.5 * Math.sin(sec * 0.09) * amp);
+  camera.lookAt(0, 0, 0);
   for (let i = 0; i < N; i++) {
     evalAt(sec, i, o);
     evalAt(Math.max(0, sec - 1 / FPS), i, p);
@@ -74,11 +90,18 @@ const Particles: React.FC = () => {
     mesh.setMatrixAt(i, d.matrix);
     col.copy(ind).lerp(cy, clamp(o.c)).multiplyScalar(clamp(o.a, 0, 1.2) * 0.82);
     mesh.setColorAt(i, col);
+    // halo difuso: da profundidad y resplandor sin fuente de luz extra
+    d.scale.set(size * 3.4 * Math.min(stretch, 2.2), size * 3.4, 1);
+    d.updateMatrix();
+    halo.setMatrixAt(i, d.matrix);
+    halo.setColorAt(i, col.clone().multiplyScalar(0.16));
   }
   mesh.instanceMatrix.needsUpdate = true;
   if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+  halo.instanceMatrix.needsUpdate = true;
+  if (halo.instanceColor) halo.instanceColor.needsUpdate = true;
   void tex;
-  return <primitive object={mesh} />;
+  return <><primitive object={halo} /><primitive object={mesh} /></>;
 };
 
 export const Stage: React.FC<{width: number; height: number}> = ({width, height}) => (

@@ -29,9 +29,6 @@ export const Overlay: React.FC = () => {
           <div style={{fontFamily: fonts.sans, fontWeight: 800, fontSize: 96, color: colors.coolWhite, lineHeight: 1}}>AIRE <span style={{color: colors.cyan}}>MoE</span></div>
         </div>
       </Beat>
-      <Beat from={3.6} to={6.4} style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Title size={52} style={{textAlign: 'center', maxWidth: 1300}}>Inteligencia artificial eficiente y soberana, hecha en Cuba</Title>
-      </Beat>
       <Beat from={6.6} to={10} style={{justifyContent: 'center', alignItems: 'center'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: 40}}>
           <div style={{background: colors.coolWhite, borderRadius: 18, padding: '18px 26px'}}><Img src={assets.icimaf} style={{height: 150, display: 'block'}} /></div>

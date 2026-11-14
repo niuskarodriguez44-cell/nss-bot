@@ -1,5 +1,5 @@
 import React from 'react';
-import {Beat, Label, Title} from '../components/Beat';
+import {Beat} from '../components/Beat';
 import {colors, fonts} from '../brand/tokens';
 import {ambient, lerp, prog, R1, R2, R3, R4, Formation} from '../engine/rand';
 
@@ -19,18 +19,10 @@ export const formation: Formation = (i, t, o) => {
 };
 
 export const Overlay: React.FC = () => (
-  <>
-    <Beat from={0.4} to={3.4} style={{justifyContent: 'center', alignItems: 'center'}}>
-      <Label size={40}>Presentamos</Label>
-    </Beat>
-    <Beat from={3.6} to={8.6} style={{justifyContent: 'center', alignItems: 'center'}}>
-      <div style={{display: 'flex', gap: 150, alignItems: 'baseline', fontFamily: fonts.sans, fontSize: 104, lineHeight: 1}}>
-        <span style={{fontWeight: 700, color: colors.coolWhite}}>AliceMaf <span style={{color: colors.indigo}}>12B</span></span>
-        <span style={{fontWeight: 800, color: colors.coolWhite}}>AIRE <span style={{color: colors.cyan}}>MoE</span></span>
-      </div>
-    </Beat>
-    <Beat from={8.8} to={11.8} style={{justifyContent: 'flex-end', alignItems: 'center'}}>
-      <Title size={52} style={{textAlign: 'center', maxWidth: 1300, marginBottom: 40}}>Dos proyectos de investigación del ICIMAF</Title>
-    </Beat>
-  </>
+  <Beat from={0.8} to={8.8} style={{justifyContent: 'center', alignItems: 'center'}}>
+    <div style={{display: 'flex', gap: 150, alignItems: 'baseline', fontFamily: fonts.sans, fontSize: 104, lineHeight: 1, marginTop: 120}}>
+      <span style={{fontWeight: 700, color: colors.coolWhite}}>AliceMaf <span style={{color: colors.indigo}}>12B</span></span>
+      <span style={{fontWeight: 800, color: colors.coolWhite}}>AIRE <span style={{color: colors.cyan}}>MoE</span></span>
+    </div>
+  </Beat>
 );

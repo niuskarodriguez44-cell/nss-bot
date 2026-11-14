@@ -11,8 +11,8 @@ export const Beat: React.FC<{from: number; to: number; children: React.ReactNode
   const o = Math.min(fi, fo);
   if (o <= 0.001) return null;
   return (
-    <AbsoluteFill style={{padding: `${SAFE * 100}vh ${SAFE * 100}vw`, display: 'flex', flexDirection: 'column', opacity: o, ...style}}>
-      <div style={{transform: `translateY(${(1 - fi) * 16}px)`, }}>{children}</div>
+    <AbsoluteFill style={{padding: `${SAFE * 100}vh ${SAFE * 100}vw ${SAFE * 100 + (style?.justifyContent === 'flex-end' ? 15 : 0)}vh`, display: 'flex', flexDirection: 'column', opacity: o, ...style}}>
+      <div style={{filter: `blur(${(1 - o) * 7}px)`, transform: `translateY(${(1 - fi) * 16}px) scale(${0.985 + 0.015 * fi})`, }}>{children}</div>
     </AbsoluteFill>
   );
 };

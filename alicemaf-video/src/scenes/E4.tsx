@@ -91,9 +91,6 @@ export const Overlay: React.FC = () => {
   const t = (useCurrentFrame() / FPS) * K;
   return (
     <>
-      <Beat from={0.4} to={3.4} style={{justifyContent: 'flex-start', alignItems: 'center'}}>
-        <Label size={28} style={{maxWidth: 1250, textAlign: 'center', color: colors.coolWhite, marginTop: 20}}>En una capa MoE, el enrutador selecciona qué expertos procesan cada token</Label>
-      </Beat>
       {LBL.map(([txt, x, y, t0], k) => {
         const o = ex(clamp((t - t0) / 0.9)) * (1 - ex(clamp((t - 31.6) / 0.9)));
         const [lx, ly] = px(x, y);

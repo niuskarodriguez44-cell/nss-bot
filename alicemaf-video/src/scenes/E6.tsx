@@ -32,9 +32,6 @@ export const Overlay: React.FC = () => {
           <Title size={50} style={{maxWidth: 900, marginBottom: 30}}><span style={{color: colors.cyan, fontFamily: fonts.mono, fontWeight: 400, marginRight: 22}}>0{k + 1}</span>{a}</Title>
         </Beat>
       ))}
-      <Beat from={14.2} to={17.0} style={{justifyContent: 'flex-end', alignItems: 'center'}}>
-        <div style={{fontFamily: fonts.sans, fontSize: 32, color: colors.coolWhite, marginBottom: 30}}>Se validará frente a un motor de referencia · mismo modelo, mismo hardware</div>
-      </Beat>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Beat, Label, Title} from '../components/Beat';
+import {Beat, Title} from '../components/Beat';
 import {clamp, lerp, prog, R1, R2, R3, R4, rotY, Formation} from '../engine/rand';
 
 const NODES = 24;
@@ -33,9 +33,6 @@ export const formation: Formation = (i, t, o) => {
 
 export const Overlay: React.FC = () => (
   <>
-    <Beat from={0.6} to={3.8} style={{justifyContent: 'flex-end', alignItems: 'center'}}>
-      <Label size={30} color="#BAC6E8">Hardware costoso · servicios externos</Label>
-    </Beat>
     <Beat from={5.6} to={9.6} style={{justifyContent: 'flex-end', alignItems: 'center'}}>
       <Title size={56} style={{textAlign: 'center', maxWidth: 1250}}>IA en las computadoras que ya tenemos</Title>
     </Beat>
