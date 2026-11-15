@@ -1,0 +1,1 @@
+Fuente: https://github.com/bangtutorial/bang-motion (commit c1aa65e, v1.19.0, MIT). Se omitió docs/gallery e iconos.
