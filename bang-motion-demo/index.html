@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>AliceMaf 12B + AIRE MoE · intro 10 s</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+@font-face{font-family:'Open Sans';font-weight:600;src:url(fonts/open-sans-latin-600-normal.woff2)}
+@font-face{font-family:'Open Sans';font-weight:800;src:url(fonts/open-sans-latin-800-normal.woff2)}
+@font-face{font-family:'Liberation Mono';src:url(fonts/LiberationMono-Regular.ttf)}
+:root{--ink:#080E25;--ind:#565EF2;--cy:#72E8ED;--wh:#F5F7FF}
+*{margin:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;width:1920px;height:1080px;left:0;top:0;transform-origin:0 0;background:var(--ink);overflow:hidden;font-family:'Open Sans',sans-serif}
+#bg{position:absolute;inset:-300px;will-change:transform}
+.blob{position:absolute;border-radius:50%;filter:blur(130px)}
+#grain{position:absolute;inset:0;opacity:.07;mix-blend-mode:overlay;pointer-events:none;z-index:38}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(8,14,37,0) 55%,rgba(3,6,18,.65) 100%);pointer-events:none;z-index:39}
+#cam{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:960px 540px}
+#world{position:absolute;left:0;top:0;width:1920px;height:1080px;filter:url(#mb)}
+.zone{position:absolute;top:0;width:1920px;height:1080px}
+.mono{font-family:'Liberation Mono',monospace;letter-spacing:.3em;text-transform:uppercase;color:var(--cy);white-space:nowrap}
+#iso{position:absolute;left:700px;top:308px;width:520px;clip-path:inset(100% 0 0 0)}
+.ring{position:absolute;width:30px;height:30px;margin:-15px;border:2px solid var(--cy);border-radius:50%;opacity:0}
+#lab1{position:absolute;left:0;width:1920px;text-align:center;top:800px;font-size:30px}
+#lab2{position:absolute;left:0;width:1920px;text-align:center;top:930px;font-size:24px;color:var(--wh)}
+#diag{position:absolute;left:0;top:0}
+#aire{position:absolute;left:0;width:1920px;top:370px;text-align:center;font-weight:800;font-size:250px;line-height:1;letter-spacing:-.02em;color:var(--wh)}
+#aire .moe{color:var(--cy)}
+#aire span.c{display:inline-block}
+#lab3{position:absolute;left:0;width:1920px;text-align:center;top:690px;font-size:28px}
+.panel{position:absolute;top:120px;width:260px;height:840px;border:1.5px solid rgba(114,232,237,.35);background:linear-gradient(160deg,rgba(86,94,242,.16),rgba(114,232,237,.03));transform-origin:50% 50%}
+#wipe{position:absolute;left:0;top:0;width:1920px;height:1080px;background:var(--wh);clip-path:inset(0 0 0 100%);z-index:40;display:flex;align-items:center;justify-content:center;gap:56px}
+#wipe img{height:250px}
+#wipe .t{font-weight:600;font-size:58px;line-height:1.25;color:var(--ink)}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<filter id="mb" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="0 0"/></filter>
+<filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/></filter>
+</defs></svg>
+<div id="stage">
+  <div id="bg">
+    <div class="blob" id="b1" style="left:420px;top:380px;width:760px;height:760px;background:#4046C8;opacity:.34"></div>
+    <div class="blob" id="b2" style="left:1300px;top:560px;width:620px;height:620px;background:#72E8ED;opacity:.13"></div>
+    <div class="blob" id="b3" style="left:1850px;top:260px;width:560px;height:560px;background:#565EF2;opacity:.26"></div>
+  </div>
+  <div id="cam"><div id="world">
+    <!-- Zona 1: el isotipo se bifurca -->
+    <div class="zone" style="left:0">
+      <img id="iso" src="assets/isotipo.png" alt="">
+      <div class="ring" id="r1" style="left:1166px;top:540px"></div>
+      <div class="ring" id="r2" style="left:1190px;top:620px"></div>
+      <div class="mono" id="lab1"></div>
+    </div>
+    <!-- Zona 2: el enrutador elige expertos -->
+    <div class="zone" style="left:2400px">
+      <svg id="diag" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g fill="none" stroke-linecap="round">
+          <path id="pA" d="M830 540 C1000 540 1040 250 1170 250" stroke="#72E8ED" stroke-width="3"/>
+          <path id="pB" d="M830 540 L1170 540" stroke="#565EF2" stroke-width="2" stroke-dasharray="6 12" opacity=".5"/>
+          <path id="pC" d="M830 540 C1000 540 1040 830 1170 830" stroke="#72E8ED" stroke-width="3"/>
+          <path id="oA" d="M1430 250 C1560 250 1560 540 1660 540" stroke="#72E8ED" stroke-width="3"/>
+          <path id="oC" d="M1430 830 C1560 830 1560 540 1660 540" stroke="#72E8ED" stroke-width="3"/>
+          <path id="pT" d="M300 540 L690 540" stroke="#BAC6E8" stroke-width="2" opacity=".6"/>
+        </g>
+        <circle id="tok" cx="300" cy="540" r="16" fill="#72E8ED"/>
+        <g id="router"><circle cx="760" cy="540" r="72" fill="rgba(86,94,242,.14)" stroke="#72E8ED" stroke-width="3"/>
+          <path d="M715 540 H760 L800 500 M760 540 L800 580 M760 540 H805" stroke="#F5F7FF" stroke-width="5" stroke-linecap="round" fill="none"/></g>
+        <g id="eA"><rect x="1170" y="185" width="260" height="130" rx="18" fill="rgba(114,232,237,.10)" stroke="#72E8ED" stroke-width="3"/><text x="1300" y="262" text-anchor="middle" font-family="Liberation Mono" font-size="34" fill="#F5F7FF" letter-spacing="8">A</text></g>
+        <g id="eB"><rect x="1170" y="475" width="260" height="130" rx="18" fill="none" stroke="#565EF2" stroke-width="2" stroke-dasharray="8 10" opacity=".55"/><text x="1300" y="552" text-anchor="middle" font-family="Liberation Mono" font-size="34" fill="#BAC6E8" letter-spacing="8" opacity=".5">B</text></g>
+        <g id="eC"><rect x="1170" y="765" width="260" height="130" rx="18" fill="rgba(114,232,237,.10)" stroke="#72E8ED" stroke-width="3"/><text x="1300" y="842" text-anchor="middle" font-family="Liberation Mono" font-size="34" fill="#F5F7FF" letter-spacing="8">C</text></g>
+        <circle id="out" cx="1710" cy="540" r="44" fill="none" stroke="#565EF2" stroke-width="3"/>
+        <g id="toks"></g>
+      </svg>
+      <div class="mono" id="lab2" style="left:0"></div>
+    </div>
+    <!-- Zona 3: AIRE MoE -->
+    <div class="zone" style="left:4800px">
+      <div class="panel" style="left:260px;transform:skewY(-4deg)"></div>
+      <div class="panel" style="left:640px;transform:skewY(-4deg)"></div>
+      <div class="panel" style="left:1020px;transform:skewY(-4deg)"></div>
+      <div class="panel" style="left:1400px;transform:skewY(-4deg)"></div>
+      <div id="aire"><span id="aw"></span> <span class="moe" id="mw"></span></div>
+      <div class="mono" id="lab3"></div>
+    </div>
+  </div></div>
+  <div id="wipe"><img src="assets/icimaf.png" alt=""><div class="t">Instituto de Cibernética,<br>Matemática y Física</div></div>
+  <div id="vig"></div>
+  <svg id="grain" width="1920" height="1080"><rect width="100%" height="100%" filter="url(#gr)"/></svg>
+</div>
+<script src="gsap.min.js"></script>
+<script>
+// Determinista: todo es función de tl.time(); nada lee el reloj ni Math.random().
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fit=()=>{const k=Math.min(innerWidth/1920,innerHeight/1080);const st=$('#stage');st.style.transform=`scale(${k})`;st.style.left=(innerWidth-1920*k)/2+'px';st.style.top=(innerHeight-1080*k)/2+'px'};
+addEventListener('resize',fit);fit();
+const ease='expo.out';
+// letras sueltas
+const split=(el,txt)=>{el.innerHTML=[...txt].map(c=>`<span class="c">${c}</span>`).join('')};
+split($('#aw'),'AIRE');split($('#mw'),'MoE');
+// tokens que viajan por las rutas (posición = f(progreso))
+const toks=$('#toks');const svgNS='http://www.w3.org/2000/svg';
+const routes=[['pA','oA'],['pC','oC'],['pA','oA'],['pC','oC'],['pA','oA'],['pC','oC']];
+const dots=routes.map(()=>{const c=document.createElementNS(svgNS,'circle');c.setAttribute('r',9);c.setAttribute('fill','#72E8ED');c.style.opacity=0;toks.appendChild(c);return c});
+const L={};['pA','pC','oA','oC'].forEach(id=>L[id]=$('#'+id).getTotalLength());
+const st={p:0};
+const placeTokens=p=>{dots.forEach((d,i)=>{const t=(p-i*0.12)/0.8;if(t<=0||t>=1){d.style.opacity=0;return}
+  const [a,b]=routes[i];const u=t<.5?t*2:(t-.5)*2;const id=t<.5?a:b;const pt=$('#'+id).getPointAtLength(u*L[id]);
+  d.setAttribute('cx',pt.x);d.setAttribute('cy',pt.y);d.setAttribute('r',t<.5?9:7);d.style.opacity=Math.min(1,t*6,(1-t)*6)})};
+// trazado de rutas
+['pA','pB','pC','oA','oC','pT'].forEach(id=>{const p=$('#'+id),l=p.getTotalLength();if(id!=='pB'){p.style.strokeDasharray=l;p.style.strokeDashoffset=l}});
+gsap.set(['#eA','#eB','#eC','#router','#out','#tok'],{opacity:0,transformOrigin:'50% 50%',svgOrigin:undefined});
+gsap.set('#lab1,#lab2,#lab3',{opacity:0});
+gsap.set('#aw .c,#mw .c',{opacity:0,y:60,filter:'blur(18px)'});
+gsap.set('.panel',{opacity:0,y:120});
+const tl=gsap.timeline({paused:true,defaults:{ease}});
+// --- 0–2.6 s · el isotipo crece; la cámara empuja despacio ---
+tl.to('#cam',{scale:1.13,duration:2.8,ease:'power1.out'},0);
+tl.to('#bg',{x:-90,duration:10,ease:'none'},0);
+tl.to('#b1',{x:140,y:-60,duration:10,ease:'sine.inOut'},0).to('#b2',{x:-200,y:80,duration:10,ease:'sine.inOut'},0).to('#b3',{x:-260,y:60,duration:10,ease:'sine.inOut'},0);
+tl.to('#iso',{clipPath:'inset(0% 0 0 0)',duration:1.5,ease:'power3.out'},0.25);
+tl.to('.ring',{opacity:1,duration:.01},1.45).fromTo('#r1',{scale:.2},{scale:2.4,opacity:0,duration:1.2,ease:'power2.out'},1.45).fromTo('#r2',{scale:.2,opacity:1},{scale:2.4,opacity:0,duration:1.2,ease:'power2.out'},1.7);
+tl.to('#lab1',{opacity:1,duration:.5},1.7);
+tl.call(()=>{},null,0); // placeholder
+const lab1='ALICEMAF 12B';tl.to({v:0},{v:1,duration:.9,ease:'none',onUpdate(){$('#lab1').textContent=lab1.slice(0,Math.round(this.targets()[0].v*lab1.length))}},1.7);
+// --- 2.6–3.5 s · la cámara viaja por la ruta (whip con desenfoque direccional) ---
+const mb=$('#mb feGaussianBlur');
+tl.to('#cam',{scale:.88,duration:.45,ease:'power2.in'},2.55).to('#cam',{scale:1.0,duration:.7,ease:'expo.out'},3.0);
+tl.to('#world',{x:-2400,duration:.95,ease:'power4.inOut'},2.55);
+tl.to(mb,{attr:{stdDeviation:'55 0'},duration:.45,ease:'power2.in'},2.55).to(mb,{attr:{stdDeviation:'0 0'},duration:.5,ease:'power2.out'},3.0);
+tl.to('#bg',{x:-340,duration:.95,ease:'power4.inOut'},2.55);
+// --- 3.5–5.6 s · token → enrutador → expertos ---
+tl.to('#tok,#router',{opacity:1,duration:.5},3.4).to('#pT',{strokeDashoffset:0,duration:.6},3.45);
+tl.to('#pA,#pC',{strokeDashoffset:0,duration:.7},3.9).to('#oA,#oC',{strokeDashoffset:0,duration:.6},4.2);
+tl.to('#eA,#eB,#eC,#out',{opacity:1,duration:.5,stagger:.06},3.85);
+tl.to('#tok',{attr:{cx:690},duration:.6,ease:'power2.inOut'},4.0);
+tl.to(st,{p:1.55,duration:1.5,ease:'power1.inOut',onUpdate(){placeTokens(st.p)}},4.2);
+tl.fromTo('#eA rect,#eC rect',{fill:'rgba(114,232,237,.10)'},{fill:'rgba(114,232,237,.34)',duration:.35},4.9);
+tl.to('#out',{attr:{stroke:'#72E8ED'},duration:.3},5.3);
+tl.to('#lab2',{opacity:1,duration:.5},3.9);
+const lab2='el enrutador elige qué expertos procesan cada token';tl.to({v:0},{v:1,duration:1.2,ease:'none',onUpdate(){$('#lab2').textContent=lab2.slice(0,Math.round(this.targets()[0].v*lab2.length))}},3.9);
+tl.to('#lab2',{opacity:0,duration:.3},5.45);
+// --- 5.6–6.4 s · whip a AIRE MoE ---
+tl.to('#cam',{scale:.88,duration:.4,ease:'power2.in'},5.55).to('#cam',{scale:1.0,duration:.7,ease:'expo.out'},5.95);
+tl.to('#world',{x:-4800,duration:.9,ease:'power4.inOut'},5.55);
+tl.to(mb,{attr:{stdDeviation:'55 0'},duration:.4,ease:'power2.in'},5.55).to(mb,{attr:{stdDeviation:'0 0'},duration:.5,ease:'power2.out'},5.95);
+tl.to('#bg',{x:-640,duration:.9,ease:'power4.inOut'},5.55);
+// --- 6.4–8.3 s · AIRE MoE entra; los paneles de vidrio barren con parallax ---
+tl.to('.panel',{opacity:1,y:0,duration:1.1,stagger:.1},6.1);
+tl.to('.panel',{x:-90,duration:2.3,ease:'sine.inOut',stagger:.08},6.1);
+tl.to('#aw .c',{opacity:1,y:0,filter:'blur(0px)',duration:.9,stagger:.07},6.45);
+tl.to('#mw .c',{opacity:1,y:0,filter:'blur(0px)',duration:.9,stagger:.07},6.85);
+tl.to('#cam',{scale:1.08,duration:2,ease:'power1.out'},6.5);
+tl.to('#lab3',{opacity:1,duration:.4},7.3);
+const lab3='motor de inferencia propio';tl.to({v:0},{v:1,duration:.8,ease:'none',onUpdate(){$('#lab3').textContent=lab3.slice(0,Math.round(this.targets()[0].v*lab3.length))}},7.3);
+// --- 8.3–10 s · panel de luz barre con el sello del ICIMAF ---
+tl.to('#wipe',{clipPath:'inset(0 0 0 0%)',duration:.75,ease:'power4.inOut'},8.3);
+tl.fromTo('#wipe img,#wipe .t',{y:30,opacity:0},{y:0,opacity:1,duration:.7,stagger:.1},8.7);
+tl.to('#stage',{opacity:1,duration:.01},0);
+tl.to('#wipe',{opacity:0,duration:.4,ease:'power1.in'},9.6);
+window.__tl=tl;window.__seek=t=>{tl.pause();tl.time(t);placeTokens(st.p)};
+const q=new URLSearchParams(location.search);
+if(!q.has('clean')){tl.eventCallback('onComplete',()=>tl.play(0));tl.play(0)}
+</script></body></html>
