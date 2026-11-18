@@ -118,6 +118,10 @@ TRACKS = {
     "skill": dict(duration=46.0, bars=19, mid=6, full=12, bells=8, end=16, name="music.mp3",
                   chords=[[48, 52, 55, 60], [47, 50, 55, 59], [45, 52, 57, 60], [41, 53, 57, 60]],
                   bass=[36, 43, 45, 41], arp=0.36),
+    # video 4 (CubanBotLaunch, 59 s): cálido y optimista, discreto bajo la voz
+    "cubanbot": dict(duration=59.0, bars=24, mid=4, full=99, bells=99, end=22, name="cubanbot/musica.mp3",
+                     chords=[[48, 52, 55, 60], [45, 52, 57, 60], [41, 53, 57, 60], [43, 50, 55, 59]],
+                     bass=[36, 45, 41, 43], arp=0.22),
     # video 2 (AgentPlanner, 60 s): más calmado y contemplativo, en la menor
     "agent": dict(duration=60.0, bars=24, mid=8, full=18, bells=14, end=21, name="music_agent.mp3",
                   chords=[[45, 52, 57, 60], [41, 53, 57, 60], [48, 52, 55, 60], [43, 50, 55, 59]],

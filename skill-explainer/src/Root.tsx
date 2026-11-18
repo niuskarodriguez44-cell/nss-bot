@@ -3,6 +3,8 @@ import { Composition, Still } from "remotion";
 import { SkillExplainer } from "./SkillExplainer";
 import { FPS, TOTAL_FRAMES } from "./timeline";
 import { AgentPlanner } from "./agent/AgentPlanner";
+import { CubanBotLaunch } from "./cubanbot/CubanBotLaunch";
+import { TOTAL as CUBAN_TOTAL } from "./cubanbot/brand";
 import { McpStory } from "./story/McpStory";
 import { STORY_TOTAL } from "./story/script";
 import { SpriteSheet } from "./story/SpriteSheet";
@@ -27,6 +29,14 @@ export const RemotionRoot: React.FC = () => {
         height={1080}
         fps={FPS}
         durationInFrames={AGENT_TOTAL}
+      />
+      <Composition
+        id="CubanBotLaunch"
+        component={CubanBotLaunch}
+        width={1920}
+        height={1080}
+        fps={FPS}
+        durationInFrames={CUBAN_TOTAL}
       />
       <Composition
         id="McpStory"
