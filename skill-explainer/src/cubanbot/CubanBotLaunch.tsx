@@ -9,6 +9,7 @@ import {
 } from "remotion";
 import { SfxLayer } from "../SfxLayer";
 import { B, NARR_DELAY, SCENE, TOTAL, FPS } from "./brand";
+import { DUCK } from "./duck";
 import {
   C1Intro,
   C2Team,
@@ -56,12 +57,15 @@ export const CubanBotLaunch: React.FC = () => {
       {f.has("cubanbot/musica.mp3") ? (
         <Audio
           src={staticFile("cubanbot/musica.mp3")}
-          volume={(fr) =>
-            interpolate(fr, [0, 20, TOTAL - 50, TOTAL], [0, 0.16, 0.16, 0], {
+          volume={(fr) => {
+            // Música baja siempre, y aún más baja mientras habla el narrador.
+            const fade = interpolate(fr, [0, 20, TOTAL - 50, TOTAL], [0, 1, 1, 0], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
-            })
-          }
+            });
+            const voice = DUCK[fr] ?? 0;
+            return fade * (0.11 - 0.075 * voice);
+          }}
         />
       ) : null}
       <SfxLayer cues={cues()} roleOf={{}} prefix="v1" gain={1} />

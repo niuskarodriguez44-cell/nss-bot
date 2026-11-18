@@ -156,7 +156,7 @@ const COLORS: Record<Mascot, string> = {
 export const C2Team: React.FC<P> = ({ dur }) => {
   const frame = useCurrentFrame();
   // Tiempos de cada nombre dentro de la frase (proporcionales a la narración).
-  const marks = [0.16, 0.28, 0.48, 0.6, 0.71, 0.84].map((x) => at(dur, x));
+  const marks = [0.112, 0.226, 0.42, 0.567, 0.685, 0.79].map((x) => at(dur, x));
   const active = marks.reduce((acc, m, i) => (frame >= m ? i : acc), -1);
   const cam = cameraStyle(frame, [
     { f: 0, x: 960, y: 540, s: 1.0 },
@@ -176,7 +176,20 @@ export const C2Team: React.FC<P> = ({ dur }) => {
     <AbsoluteFill>
       <StageBg />
       <div style={cam}>
-        <BrowserFrame src="01-cubi.png" />
+        <BrowserFrame src="01-cubi.png">
+          <div
+            style={{
+              position: "absolute",
+              left: 281 * K,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              background:
+                "linear-gradient(90deg, rgba(250,250,248,0.99) 0%, rgba(250,250,248,0.98) 70%, rgba(250,250,248,0.95) 100%)",
+              opacity: easeOut(lerp(frame, marks[0] - 6, marks[0] + 8)),
+            }}
+          />
+        </BrowserFrame>
         {TEAM.map((t, i) => {
           const p = easeOut(lerp(frame, marks[i], marks[i] + 10));
           const isCubi = t.name === "Cubi";
@@ -223,9 +236,9 @@ export const C2Team: React.FC<P> = ({ dur }) => {
 // ------------------------------------------------------------ 3 · Perfil
 export const C3Profile: React.FC<P> = ({ dur }) => {
   const frame = useCurrentFrame();
-  const c1 = at(dur, 0.32);
-  const c2 = at(dur, 0.52);
-  const c3 = at(dur, 0.74);
+  const c1 = at(dur, 0.44);
+  const c2 = at(dur, 0.6);
+  const c3 = at(dur, 0.76);
   const cam = cameraStyle(frame, [
     { f: 0, x: pt(700, 300).x, y: pt(700, 300).y, s: 1.35 },
     { f: at(dur, 0.22), x: pt(1270, 330).x, y: pt(1270, 330).y, s: 2.0 },
@@ -419,10 +432,10 @@ const Connected: React.FC<{ x: number; y: number; p: number }> = ({
 
 export const C5Apps: React.FC<P> = ({ dur }) => {
   const frame = useCurrentFrame();
-  const c1 = at(dur, 0.22);
-  const c2 = at(dur, 0.36);
-  const c3 = at(dur, 0.5);
-  const c4 = at(dur, 0.78);
+  const c1 = at(dur, 0.3);
+  const c2 = at(dur, 0.42);
+  const c3 = at(dur, 0.54);
+  const c4 = at(dur, 0.7);
   const cam = cameraStyle(frame, [
     { f: 0, x: pt(720, 450).x, y: pt(720, 450).y, s: 1.15 },
     { f: at(dur, 0.18), x: pt(700, 430).x, y: pt(700, 430).y, s: 1.9 },
@@ -771,8 +784,8 @@ export const C9Outro: React.FC<P> = ({ dur }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t1 = easeOut(lerp(frame, 4, 22));
-  const t2 = easeOut(lerp(frame, 20, 38));
-  const t3 = lerp(frame, at(dur, 0.55), at(dur, 0.55) + 14);
+  const t2 = easeOut(lerp(frame, 30, 46));
+  const t3 = lerp(frame, 106, 120);
   const cam = cameraStyle(frame, [
     { f: 0, x: 960, y: 520, s: 1.1 },
     { f: dur, x: 960, y: 540, s: 1.0 },

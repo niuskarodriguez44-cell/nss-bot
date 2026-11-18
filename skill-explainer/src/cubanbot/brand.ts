@@ -27,10 +27,9 @@ export const NARR_DURATION = 55.44;
 
 /**
  * Inicio (segundos dentro de la narración) de cada frase del guion.
- * Estimados por longitud de texto; se reemplazan por los medidos con
- * scripts/narration_segments.py cuando el mp3 está en public/cubanbot/narracion.mp3.
+ * Medidos sobre public/cubanbot/narracion.mp3 (pausas detectadas con scripts/narration_segments.py).
  */
-export const SEG = [0, 4.89, 15.44, 22.17, 28.05, 34.78, 40.27, 46.6, 51.63];
+export const SEG = [0, 5.41, 17.43, 23.94, 29.03, 36.7, 41.6, 46.55, 50.84];
 
 export const segFrame = (i: number) => Math.round((NARR_DELAY + SEG[i]) * FPS);
 export const TOTAL = Math.round((NARR_DELAY + NARR_DURATION + 2.6) * FPS);
